@@ -1,0 +1,20 @@
+[package]
+name = "cat-gatekeeper-rust"
+version = "1.0.0"
+description = "一个基于 Tauri 的桌面应用，通过猫咪视频提醒您休息"
+authors = ["you"]
+edition = "2021"
+
+[build-dependencies]
+tauri-build = { version = "1.5.6", features = [] }
+
+[dependencies]
+tauri = { version = "1.5", features = ["api-all", "icon-ico", "icon-png", "system-tray"] }
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+tokio = { version = "1.0", features = ["full"] }
+single-instance = "0.3"
+# tauri-plugin-i18n = "2.0.2" # Using v1, compatible plugin not available
+
+[features]
+custom-protocol = ["tauri/custom-protocol"]

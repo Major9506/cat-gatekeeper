@@ -1,0 +1,77 @@
+# 日志文件
+*.log
+
+# 环境变量（敏感信息）
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# 前端依赖与构建
+node_modules/
+dist/
+build/
+.output/
+.nuxt/
+.next/
+.astro/
+.gatsby/
+.svelte-kit/
+
+# 前端工具缓存
+.pnpm-store/
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.yarn/patches
+
+# Tauri 目标目录（Rust 编译产物）
+src-tauri/target/
+
+# Tauri 生成的二进制、安装包、签名文件
+src-tauri/*.exe
+src-tauri/*.msi
+src-tauri/*.dmg
+src-tauri/*.app
+src-tauri/*.deb
+src/src-tauri/*.rpm
+src-tauri/gen/
+src-tauri/.cargo/
+
+# Rust 相关
+Cargo.lock
+*.rs.bk
+*.rlib
+*.d
+
+# 系统文件
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE / 编辑器
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.idea/
+*.iml
+.project
+.cproject
+.classpath
+.factorypath
+.idea/
+.vscode/
+*.code-workspace
+.vs/
+
+# 临时文件
+*.tmp
+*.temp

@@ -1,0 +1,49 @@
+{
+  "name": "cat-gatekeeper",
+  "private": true,
+  "version": "1.0.0",
+  "description": "一个基于 Tauri 的桌面应用，通过猫咪提醒官提醒您休息",
+  "main": "index.js",
+  "scripts": {
+    "start": "vite",
+    "dev": "vite",
+    "build": "tsc && vite build",
+    "preview": "vite preview",
+    "tauri": "tauri",
+    "tauri:dev": "tauri dev",
+    "tauri:build": "tauri build"
+  },
+  "keywords": [
+    "tauri",
+    "desktop",
+    "break-reminder",
+    "productivity",
+    "health",
+    "cat",
+    "desktop-app",
+    "screen-breaks",
+    "hse-guidelines"
+  ],
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@tailwindcss/postcss": "^4.2.4",
+    "i18next": "^23.7.6",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-i18next": "^13.5.0",
+    "react-router-dom": "^6.20.1"
+  },
+  "devDependencies": {
+    "@tauri-apps/api": "^1.5.1",
+    "@tauri-apps/cli": "^1.5.11",
+    "@types/react": "^18.2.37",
+    "@types/react-dom": "^18.2.15",
+    "@vitejs/plugin-react": "^4.1.1",
+    "autoprefixer": "^10.5.0",
+    "postcss": "^8.5.13",
+    "tailwindcss": "^4.2.4",
+    "typescript": "^5.2.2",
+    "vite": "^4.5.0"
+  }
+}

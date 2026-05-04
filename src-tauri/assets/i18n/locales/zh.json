@@ -1,0 +1,21 @@
+{
+  "tray": {
+    "loading": "加载中...",
+    "status": {
+      "break": "休息结束于 {}:{}",
+      "next": "下次休息 {}:{}"
+    },
+    "pause": "暂停",
+    "resume": "继续",
+    "settings": "设置",
+    "quit": "退出"
+  },
+  "window": {
+    "settings": {
+      "title": "猫咪看门人设置"
+    },
+    "overlay": {
+      "title": "猫咪看门人"
+    }
+  }
+}

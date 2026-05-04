@@ -1,0 +1,85 @@
+{
+  "app": {
+    "title": "猫咪看门人",
+    "description": "一个通过猫咪视频提醒您休息的桌面应用"
+  },
+  "tray": {
+    "show": "显示",
+    "hide": "隐藏",
+    "quit": "退出"
+  },
+  "settings": {
+    "title": "设置",
+    "subtitle": "您的猫咪休息提醒助手",
+    "timerStatus": "定时器状态",
+    "nextBreakIn": "下次休息",
+    "breakEndsIn": "休息结束于",
+    "paused": "已暂停",
+    "pause": "暂停",
+    "resume": "继续",
+    "workInterval": {
+      "label": "工作间隔",
+      "desc": "休息提醒之间的分钟数",
+      "unit": "分钟"
+    },
+    "breakDuration": {
+      "label": "休息时长",
+      "desc": "休息时长（HSE建议每小时5-10分钟）",
+      "unit": "秒"
+    },
+    "snoozeDuration": {
+      "label": "贪睡时长",
+      "desc": "点击贪睡后延迟下次休息的分钟数",
+      "unit": "秒"
+    },
+    "soundEnabled": {
+      "label": "提示音",
+      "desc": "休息开始时播放喵叫声"
+    },
+    "multiMonitor": {
+      "label": "多显示器",
+      "desc": "在所有显示器上显示猫咪"
+    },
+    "videoPath": {
+      "label": "自定义猫咪视频",
+      "desc": "选择您自己的视频文件",
+      "browse": "浏览...",
+      "default": "默认"
+    },
+    "chromaKey": {
+      "title": "色度键（绿幕）",
+      "desc": "从您的猫咪视频中移除背景，让猫咪看起来像在您的屏幕上走动。",
+      "enabled": "色度键",
+      "enabledDesc": "移除视频背景",
+      "color": "键颜色",
+      "colorDesc": "要移除的背景颜色"
+    },
+    "save": "保存设置",
+    "saved": "已保存！",
+    "saveFailed": "保存失败",
+    "cancel": "取消",
+    "reset": "重置为默认"
+  },
+  "overlay": {
+    "timer": "休息倒计时",
+    "reminder": "该离开屏幕休息了！",
+    "snooze": "贪睡 5 分钟",
+    "done": "完成休息",
+    "loading": "正在加载...",
+    "videoError": "视频加载失败"
+  },
+  "common": {
+    "yes": "是",
+    "no": "否",
+    "ok": "确定",
+    "cancel": "取消",
+    "browse": "浏览...",
+    "save": "保存",
+    "delete": "删除",
+    "loading": "加载中...",
+    "error": "错误",
+    "success": "成功",
+    "warning": "警告",
+    "info": "信息"
+  }
+}

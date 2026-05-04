@@ -1,0 +1,86 @@
+{
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build",
+    "devPath": "http://localhost:5173",
+    "distDir": "../dist"
+  },
+  "package": {
+    "productName": "Cat Gatekeeper",
+    "version": "1.0.0"
+  },
+  "tauri": {
+    "allowlist": {
+      "all": true,
+      "shell": {
+        "all": false,
+        "open": true
+      },
+      "fs": {
+        "all": true,
+        "scope": [
+          "$APPDATA",
+          "$APPDATA/**",
+          "$RESOURCE",
+          "$RESOURCE/**",
+          "$DESKTOP",
+          "$DESKTOP/**",
+          "$DOWNLOAD",
+          "$DOWNLOAD/**",
+          "$DOCUMENT",
+          "$DOCUMENT/**",
+          "$PICTURE",
+          "$PICTURE/**",
+          "$VIDEO",
+          "$VIDEO/**",
+          "$HOME",
+          "$HOME/**"
+        ]
+      },
+      "path": {
+        "all": true
+      },
+      "notification": {
+        "all": true
+      },
+      "window": {
+        "all": true,
+        "center": true,
+        "setTitle": true,
+        "maximize": true,
+        "unmaximize": true,
+        "minimize": true,
+        "unminimize": true,
+        "show": true,
+        "hide": true,
+        "close": true
+      },
+      "protocol": {
+        "asset": true,
+        "assetScope": ["**"]
+      }
+    },
+    "bundle": {
+      "active": true,
+      "category": "Productivity",
+      "copyright": "Copyright © 2024",
+      "externalBin": [],
+      "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.ico"],
+      "identifier": "com.cat-gatekeeper.app",
+      "longDescription": "A desktop app that reminds you to take breaks with cat videos",
+      "resources": ["../assets/*"],
+      "targets": "all"
+    },
+    "security": {
+      "csp": null
+    },
+    "updater": {
+      "active": false
+    },
+    "windows": [],
+    "systemTray": {
+      "iconPath": "icons/icon.png",
+      "iconAsTemplate": true
+    }
+  }
+}

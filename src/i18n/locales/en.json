@@ -1,0 +1,85 @@
+{
+  "app": {
+    "title": "Cat Gatekeeper",
+    "description": "A desktop app that reminds you to take breaks with cat videos"
+  },
+  "tray": {
+    "show": "Show",
+    "hide": "Hide",
+    "quit": "Quit"
+  },
+  "settings": {
+    "title": "Settings",
+    "subtitle": "Your feline break reminder",
+    "timerStatus": "Timer Status",
+    "nextBreakIn": "Next break in",
+    "breakEndsIn": "Break ends in",
+    "paused": "Paused",
+    "pause": "Pause",
+    "resume": "Resume",
+    "workInterval": {
+      "label": "Work Interval",
+      "desc": "Minutes between break reminders",
+      "unit": "minutes"
+    },
+    "breakDuration": {
+      "label": "Break Duration",
+      "desc": "Minutes for your break (HSE: 5-10 min per hour)",
+      "unit": "seconds"
+    },
+    "snoozeDuration": {
+      "label": "Snooze Duration",
+      "desc": "Minutes to delay next break when snoozing",
+      "unit": "seconds"
+    },
+    "soundEnabled": {
+      "label": "Sound Effect",
+      "desc": "Play a meow when break starts"
+    },
+    "multiMonitor": {
+      "label": "Multi-Monitor",
+      "desc": "Show cat on all displays"
+    },
+    "videoPath": {
+      "label": "Custom Cat Video",
+      "desc": "Choose your own video file",
+      "browse": "Browse...",
+      "default": "Default"
+    },
+    "chromaKey": {
+      "title": "Chroma Key (Green Screen)",
+      "desc": "Remove the background from your cat video so the cat appears to walk on your screen.",
+      "enabled": "Chroma Key",
+      "enabledDesc": "Remove video background",
+      "color": "Key Color",
+      "colorDesc": "Background color to remove"
+    },
+    "save": "Save Settings",
+    "saved": "Saved!",
+    "saveFailed": "Failed to save",
+    "cancel": "Cancel",
+    "reset": "Reset to Default"
+  },
+  "overlay": {
+    "timer": "Break Countdown",
+    "reminder": "Time to move away from the screen!",
+    "snooze": "Snooze 5 min",
+    "done": "Done",
+    "loading": "Loading...",
+    "videoError": "Video failed to load"
+  },
+  "common": {
+    "yes": "Yes",
+    "no": "No",
+    "ok": "OK",
+    "cancel": "Cancel",
+    "browse": "Browse...",
+    "save": "Save",
+    "delete": "Delete",
+    "loading": "Loading...",
+    "error": "Error",
+    "success": "Success",
+    "warning": "Warning",
+    "info": "Info"
+  }
+}

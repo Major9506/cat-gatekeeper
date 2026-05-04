@@ -1,0 +1,41 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm create *)",
+      "Bash(npm init *)",
+      "Bash(npm install *)",
+      "Bash(npx tailwindcss *)",
+      "Bash(git init *)",
+      "Bash(npm run *)",
+      "Bash(dd of=icon.ico bs=1 count=8192)",
+      "Bash(cargo check *)",
+      "Bash(magick --version)",
+      "Bash(ffmpeg -version)",
+      "Bash(python -c \"from PIL import Image; print\\('Pillow available'\\)\")",
+      "Bash(npm list *)",
+      "Bash(netstat -aon)",
+      "Bash(taskkill //PID 16524 //F)",
+      "Bash(taskkill //IM \"cat-gatekeeper-rust.exe\" //F)",
+      "Bash(npx vite *)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5173/settings.html)",
+      "Bash(curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5173/overlay.html)",
+      "Bash(taskkill //IM \"node.exe\" //F)",
+      "Bash(npx tsc *)",
+      "Bash(npx tauri *)",
+      "Bash(tasklist)",
+      "Bash(cargo search *)",
+      "Bash(cargo info *)",
+      "Bash(cargo build *)",
+      "Bash(\"d:/work/node/cat-gatekeeper-rust/src-tauri/target/release/bundle/nsis/Cat Gatekeeper_1.0.0_x64-setup.exe\" /S)",
+      "Read(//c/Program Files/Cat Gatekeeper//**)",
+      "Read(//c/Program Files \\(x86\\)/**)",
+      "Bash(pkill -f \"Cat Gatekeeper\")",
+      "Bash(\"/d/work/node/cat-gatekeeper-rust/src-tauri/target/release/bundle/nsis/Cat Gatekeeper_1.0.0_x64-setup.exe\")",
+      "Bash(taskkill //F //IM \"Cat Gatekeeper.exe\")",
+      "Bash(gh api *)",
+      "Bash(gh auth *)",
+      "WebSearch",
+      "WebFetch(domain:github.com)"
+    ]
+  }
+}

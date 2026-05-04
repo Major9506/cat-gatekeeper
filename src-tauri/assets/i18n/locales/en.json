@@ -1,0 +1,21 @@
+{
+  "tray": {
+    "loading": "Loading...",
+    "status": {
+      "break": "Break ends at {}:{}",
+      "next": "Next break {}:{}"
+    },
+    "pause": "Pause",
+    "resume": "Resume",
+    "settings": "Settings",
+    "quit": "Quit"
+  },
+  "window": {
+    "settings": {
+      "title": "Cat Gatekeeper Settings"
+    },
+    "overlay": {
+      "title": "Cat Gatekeeper"
+    }
+  }
+}
