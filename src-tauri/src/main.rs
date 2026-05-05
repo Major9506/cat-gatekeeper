@@ -11,7 +11,7 @@ use std::sync::Arc;
 use std::time::Duration;
 use tauri::{
     api::dialog::blocking::FileDialogBuilder, Manager, SystemTray, SystemTrayEvent,
-    SystemTrayMenu, SystemTrayMenuItem, WindowBuilder, WindowUrl,
+    SystemTrayMenu, SystemTrayMenuItem, WindowBuilder, WindowEvent, WindowUrl,
 };
 
 // ---------------------------------------------------------------------------
@@ -741,6 +741,15 @@ fn main() {
         .system_tray(create_system_tray())
         .on_system_tray_event(|app, event| {
             handle_tray_event(app, event);
+        })
+        .on_window_event(|event| {
+            if let WindowEvent::CloseRequested { api, .. } = event.event() {
+                // For the main settings window, prevent close and just hide
+                if event.window().label() == "main" {
+                    api.prevent_close();
+                    let _ = event.window().hide();
+                }
+            }
         })
         .setup(|app| {
             let state = AppState::new(&app.handle());

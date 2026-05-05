@@ -64,6 +64,41 @@ For most users, we recommend downloading the latest version:
 6. After the break ends, overlays close and the timer resets
 7. You can snooze (+5 minutes) or end the break early
 
+## 🌍 Language Switching
+
+The app supports both Chinese and English languages. You can switch languages as needed:
+
+### Via Settings Interface
+1. Right-click the tray icon and open **Settings**
+2. Find the **Language** option
+3. Select **Chinese** or **English**
+4. Click **Save Settings**
+
+The language setting takes effect immediately, and interface text will update to your chosen language.
+
+## 📚 Document Language Switching
+
+This documentation is available in two languages:
+- **English**: [README.en.md](README.en.md) (this file)
+- **Chinese**: [README.md](README.md)
+
+You can switch between language versions by:
+1. Opening `README.md` for Chinese documentation
+2. Opening `README.en.md` for English documentation
+3. Using the language switcher script: `node README.switch.js <language>`
+
+### Using the Language Switcher Script
+```bash
+# Switch to Chinese
+node README.switch.js zh
+
+# Switch to English
+node README.switch.js en
+
+# View current language
+node README.switch.js
+```
+
 ## 🎨 Custom Cat Videos 🚧
 
 ### Through Settings Interface
@@ -132,7 +167,9 @@ cat-gatekeeper/
 ├── vite.config.ts        # Vite Configuration
 ├── tailwind.config.js    # Tailwind CSS Configuration
 ├── tsconfig.json         # TypeScript Configuration
-└── README.md             # Project Documentation
+├── README.md              # Chinese Documentation
+├── README.en.md           # English Documentation
+└── README.switch.js       # Language Switcher Script
 ```
 
 ## ⚙️ Default Settings

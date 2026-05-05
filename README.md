@@ -17,6 +17,14 @@
 - **自定义视频** — 使用您自己的猫咪视频（开发中）
 - **贪睡功能** — 当您专注时增加 5 分钟
 
+## 📸 效果预览
+
+### 活跃猫咪动画
+![活跃猫咪动画](doc/a363c6d0-ffbf-4230-b0ca-0ae5d6fd4ffb.png)
+
+### 睡觉猫咪动画
+![睡觉猫咪动画](doc/ff2e319e-4fdd-4ded-a04d-bd99320dc546.png)
+
 ## 🚀 快速开始
 
 ```bash
@@ -64,6 +72,18 @@ npm run tauri:dev
 6. 休息结束后，覆盖层关闭，计时器重置
 7. 您可以贪睡（+5 分钟）或提前结束休息
 
+## 🌍 语言切换
+
+应用支持中文和英文两种语言，您可以根据需要切换：
+
+### 通过设置界面
+1. 右键单击托盘图标并打开 **设置**
+2. 找到 **语言** 选项
+3. 选择 **中文** 或 **英文**
+4. 点击 **保存设置**
+
+语言设置会立即生效，界面文本将更新为您选择的语言。
+
 ## 🎨 自定义猫咪视频 🚧
 
 ### 通过设置界面
@@ -100,6 +120,41 @@ ffmpeg -i your_greenscreen.mp4 -vf "colorkey=0x00FF00:0.3:0.1,format=yuv420p" \
 - **i18next** — 国际化支持
 - **Tailwind CSS** — 实用优先的 CSS 框架
 
+## 🌍 语言切换
+
+应用支持中文和英文两种语言，您可以根据需要切换：
+
+### 通过设置界面
+1. 右键单击托盘图标并打开 **设置**
+2. 找到 **语言** 选项
+3. 选择 **中文** 或 **英文**
+4. 点击 **保存设置**
+
+语言设置会立即生效，界面文本将更新为您选择的语言。
+
+## 📚 文档语言切换
+
+本文档提供两种语言版本：
+- **中文**：[README.md](README.md)（本文件）
+- **English**：[README.en.md](README.en.md)
+
+您可以通过以下方式切换文档语言：
+1. 打开 `README.md` 查看中文文档
+2. 打开 `README.en.md` 查看英文文档
+3. 使用语言切换脚本：`node README.switch.js <语言>`
+
+### 使用语言切换脚本
+```bash
+# 切换到中文
+node README.switch.js zh
+
+# 切换到英文
+node README.switch.js en
+
+# 查看当前语言状态
+node README.switch.js
+```
+
 ## 📁 项目结构
 
 ```
@@ -132,7 +187,9 @@ cat-gatekeeper/
 ├── vite.config.ts        # Vite 配置
 ├── tailwind.config.js    # Tailwind CSS 配置
 ├── tsconfig.json         # TypeScript 配置
-└── README.md             # 项目说明
+├── README.md              # 中文文档
+├── README.en.md           # 英文文档
+└── README.switch.js       # 语言切换脚本
 ```
 
 ## ⚙️ 默认设置

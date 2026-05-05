@@ -353,19 +353,17 @@ export const OverlayApp: React.FC = () => {
       </div>
 
       {/* UI Controls */}
-      {showControls && (
-        <div className="ui-overlay">
-          <div className="reminder-text">{t('overlay.reminder')}</div>
-          <div className="actions">
-            <button onClick={handleSnooze} className="btn btn-secondary">
-              {t('overlay.snooze')}
-            </button>
-            <button onClick={handleDismiss} className="btn btn-primary">
-              {t('overlay.done')}
-            </button>
-          </div>
+      <div className={`ui-overlay ${showControls ? '' : 'hidden'}`}>
+        <div className="reminder-text">{t('overlay.reminder')}</div>
+        <div className="actions">
+          <button onClick={handleSnooze} className="btn btn-secondary">
+            {t('overlay.snooze')}
+          </button>
+          <button onClick={handleDismiss} className="btn btn-primary">
+            {t('overlay.done')}
+          </button>
         </div>
-      )}
+      </div>
     </div>
   );
 };
