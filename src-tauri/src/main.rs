@@ -764,9 +764,31 @@ fn handle_tray_event(app: &tauri::AppHandle, event: SystemTrayEvent) {
 // ---------------------------------------------------------------------------
 fn main() {
     // Single instance check
-    let _lock = single_instance::SingleInstance::new("com.catgatekeeper.app").unwrap();
+    let _lock = match single_instance::SingleInstance::new("com.catgatekeeper.app") {
+        Ok(lock) => lock,
+        Err(e) => {
+            eprintln!("Failed to create single instance lock: {}", e);
+            return;
+        }
+    };
     if !_lock.is_single() {
-        println!("Another instance is already running");
+        #[cfg(target_os = "windows")]
+        {
+            use std::ffi::CString;
+            extern "system" {
+                fn MessageBoxA(
+                    hwnd: *mut core::ffi::c_void,
+                    lpText: *const u8,
+                    lpCaption: *const u8,
+                    uType: u32,
+                ) -> i32;
+            }
+            let msg = CString::new("哈基米守护神 already running.\nPlease check the system tray.\n\n应用已在运行，请检查系统托盘。".as_bytes()).unwrap();
+            let caption = CString::new("哈基米守护神".as_bytes()).unwrap();
+            unsafe {
+                MessageBoxA(std::ptr::null_mut(), msg.as_ptr() as *const u8, caption.as_ptr() as *const u8, 0x40);
+            }
+        }
         return;
     }
 
@@ -794,7 +816,7 @@ fn main() {
                 i18n.t("window.settings.title", "Cat Gatekeeper Settings")
             });
 
-            let _ = WindowBuilder::new(
+            if let Err(e) = WindowBuilder::new(
                 app,
                 "main",
                 window_url("settings.html"),
@@ -802,7 +824,10 @@ fn main() {
             .title(title)
             .inner_size(520.0, 620.0)
             .resizable(false)
-            .build();
+            .build()
+            {
+                eprintln!("Failed to create settings window: {}", e);
+            }
 
             // Start timer thread (clone needed since state is managed)
             start_timer_thread(app.handle(), state.clone());
