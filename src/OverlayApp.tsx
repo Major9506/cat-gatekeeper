@@ -37,6 +37,7 @@ export const OverlayApp: React.FC = () => {
   const hideControlsTimerRef = useRef<number | null>(null);
 
   const CHROMA_TOLERANCE = 100;
+  const CHROMA_STEP = 2; // Process every Nth pixel for performance
 
   // Format time
   const formatTime = (seconds: number) => {
@@ -101,12 +102,16 @@ export const OverlayApp: React.FC = () => {
   // Show fallback image
   const showFallback = async () => {
     try {
+      // Remove existing fallback canvases to prevent memory leak
+      document.querySelectorAll('canvas[data-fallback]').forEach((el) => el.remove());
+
       const fallbackPath = await getResourcePath('fallback');
       if (fallbackPath) {
         const img = new Image();
         img.src = convertFileSrc(fallbackPath);
         img.onload = () => {
           const canvas = document.createElement('canvas');
+          canvas.setAttribute('data-fallback', 'true');
           canvas.style.cssText =
             'position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:1;';
           canvas.width = window.innerWidth;
@@ -170,15 +175,23 @@ export const OverlayApp: React.FC = () => {
         chromaCtx.drawImage(videoEl, 0, 0, cw, ch);
       }
 
-      // Process pixels for chroma key
+      // Process pixels for chroma key (skip pixels for performance)
       const imageData = chromaCtx.getImageData(0, 0, cw, ch);
       const data = imageData.data;
-      for (let i = 0; i < data.length; i += 4) {
-        const dr = data[i] - keyR;
-        const dg = data[i + 1] - keyG;
-        const db = data[i + 2] - keyB;
-        if (dr * dr + dg * dg + db * db < tolSq) {
-          data[i + 3] = 0;
+      for (let y = 0; y < ch; y += CHROMA_STEP) {
+        for (let x = 0; x < cw; x += CHROMA_STEP) {
+          const i = (y * cw + x) * 4;
+          const dr = data[i] - keyR;
+          const dg = data[i + 1] - keyG;
+          const db = data[i + 2] - keyB;
+          const isTransparent = dr * dr + dg * dg + db * db < tolSq;
+          // Apply to this pixel and its neighbors (fill the step gap)
+          for (let dy = 0; dy < CHROMA_STEP && y + dy < ch; dy++) {
+            for (let dx = 0; dx < CHROMA_STEP && x + dx < cw; dx++) {
+              const ni = ((y + dy) * cw + (x + dx)) * 4;
+              data[ni + 3] = isTransparent ? 0 : data[ni + 3];
+            }
+          }
         }
       }
       chromaCtx.putImageData(imageData, 0, 0);

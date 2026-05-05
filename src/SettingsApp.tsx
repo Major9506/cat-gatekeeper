@@ -168,7 +168,7 @@ export const SettingsApp: React.FC = () => {
   return (
     <div className="settings-container">
       <div className="header">
-        <h1>Cat Gatekeeper</h1>
+        <h1>{t('app.title')}</h1>
         <p className="subtitle">{t('settings.subtitle')}</p>
         <button onClick={toggleLanguage} className="lang-btn">
           {currentLang === 'zh' ? 'English' : '中文'}

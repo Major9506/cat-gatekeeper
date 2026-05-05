@@ -6,7 +6,7 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "Cat Gatekeeper",
+    "productName": "HakimiGuardian",
     "version": "1.0.0"
   },
   "tauri": {
@@ -67,7 +67,7 @@
       "externalBin": [],
       "icon": ["icons/32x32.png", "icons/128x128.png", "icons/128x128@2x.png", "icons/icon.ico"],
       "identifier": "com.cat-gatekeeper.app",
-      "longDescription": "A desktop app that reminds you to take breaks with cat videos",
+      "longDescription": "一个基于 Tauri 的桌面应用，通过猫咪视频提醒您休息",
       "resources": ["../assets/*"],
       "targets": "all"
     },

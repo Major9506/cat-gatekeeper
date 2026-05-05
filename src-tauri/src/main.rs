@@ -181,7 +181,7 @@ impl AppState {
     }
 }
 
-#[derive(Serialize, Clone)]
+#[derive(Serialize, Clone, PartialEq)]
 struct TimerStatus {
     work_seconds_remaining: u32,
     break_seconds_remaining: u32,
@@ -214,8 +214,8 @@ impl I18nManager {
 
         // English translations
         let en = serde_json::json!({
-            "window.settings.title": "Cat Gatekeeper Settings",
-            "window.overlay.title": "Cat Gatekeeper",
+            "window.settings.title": "Hakimi Guardian Settings",
+            "window.overlay.title": "Hakimi Guardian",
             "tray.status.break": "Break ends at {0}:{1}",
             "tray.status.next": "Next break {0}:{1}",
             "tray.resume": "Resume",
@@ -229,8 +229,8 @@ impl I18nManager {
 
         // Chinese translations
         let zh = serde_json::json!({
-            "window.settings.title": "猫咪看门人设置",
-            "window.overlay.title": "猫咪看门人",
+            "window.settings.title": "哈基米守护神设置",
+            "window.overlay.title": "哈基米守护神",
             "tray.status.break": "休息还剩 {0}:{1}",
             "tray.status.next": "下次休息 {0}:{1}",
             "tray.resume": "继续",
@@ -385,7 +385,8 @@ async fn pause_timer(
     state: tauri::State<'_, AppState>,
 ) -> Result<(), String> {
     state.timer.is_paused.store(true, Ordering::SeqCst);
-    broadcast_timer_status(&app, &state).await;
+    let has_overlays = app.windows().keys().any(|l| l.starts_with("overlay-"));
+    broadcast_timer_status(&app, &state, has_overlays).await;
     update_tray_menu(&app, &state).await;
     Ok(())
 }
@@ -396,7 +397,8 @@ async fn resume_timer(
     state: tauri::State<'_, AppState>,
 ) -> Result<(), String> {
     state.timer.is_paused.store(false, Ordering::SeqCst);
-    broadcast_timer_status(&app, &state).await;
+    let has_overlays = app.windows().keys().any(|l| l.starts_with("overlay-"));
+    broadcast_timer_status(&app, &state, has_overlays).await;
     update_tray_menu(&app, &state).await;
     Ok(())
 }
@@ -423,7 +425,8 @@ async fn snooze_break(
         *state.timer.break_seconds_remaining.write().await = settings.snooze_duration;
         *state.timer.break_seconds_total.write().await = settings.snooze_duration;
 
-        broadcast_timer_status(&app, &state).await;
+        let has_overlays = app.windows().keys().any(|l| l.starts_with("overlay-"));
+        broadcast_timer_status(&app, &state, has_overlays).await;
         update_tray_menu(&app, &state).await;
     }
     Ok(())
@@ -491,13 +494,15 @@ async fn set_language(
 // ---------------------------------------------------------------------------
 // Timer Logic
 // ---------------------------------------------------------------------------
-async fn broadcast_timer_status(app: &tauri::AppHandle, state: &AppState) {
+async fn broadcast_timer_status(app: &tauri::AppHandle, state: &AppState, has_overlays: bool) {
     let status = state.get_timer_status().await;
 
-    // Send to all overlay windows
-    for window in app.windows().values() {
-        if window.label().starts_with("overlay-") {
-            let _ = window.emit("timer-tick", &status);
+    // Send to all overlay windows only if they exist
+    if has_overlays {
+        for window in app.windows().values() {
+            if window.label().starts_with("overlay-") {
+                let _ = window.emit("timer-tick", &status);
+            }
         }
     }
 
@@ -647,6 +652,7 @@ async fn end_break(app: &tauri::AppHandle, state: &AppState) {
 
 fn start_timer_thread(app: tauri::AppHandle, state: AppState) {
     tauri::async_runtime::spawn(async move {
+        let mut last_status: Option<TimerStatus> = None;
         loop {
             tokio::time::sleep(Duration::from_secs(1)).await;
 
@@ -654,28 +660,50 @@ fn start_timer_thread(app: tauri::AppHandle, state: AppState) {
                 continue;
             }
 
-            if state.timer.is_break_active.load(Ordering::SeqCst) {
-                let mut break_remaining = state.timer.break_seconds_remaining.write().await;
-                if *break_remaining > 0 {
-                    *break_remaining -= 1;
+            // Isolate break/start logic in a spawned task so a panic
+            // cannot kill the timer loop itself
+            let app_clone = app.clone();
+            let state_clone = state.clone();
+            let tick_handle = tauri::async_runtime::spawn(async move {
+                if state_clone.timer.is_break_active.load(Ordering::SeqCst) {
+                    let mut break_remaining =
+                        state_clone.timer.break_seconds_remaining.write().await;
+                    if *break_remaining > 0 {
+                        *break_remaining -= 1;
+                    }
+                    if *break_remaining == 0 {
+                        drop(break_remaining);
+                        end_break(&app_clone, &state_clone).await;
+                    }
+                } else {
+                    let mut work_remaining =
+                        state_clone.timer.work_seconds_remaining.write().await;
+                    if *work_remaining > 0 {
+                        *work_remaining -= 1;
+                    }
+                    if *work_remaining == 0 {
+                        drop(work_remaining);
+                        start_break(&app_clone, &state_clone).await;
+                    }
                 }
-                if *break_remaining == 0 {
-                    drop(break_remaining);
-                    end_break(&app, &state).await;
-                }
-            } else {
-                let mut work_remaining = state.timer.work_seconds_remaining.write().await;
-                if *work_remaining > 0 {
-                    *work_remaining -= 1;
-                }
-                if *work_remaining == 0 {
-                    drop(work_remaining);
-                    start_break(&app, &state).await;
-                }
-            }
+            });
+            // Ignore join errors — the spawned task handles its own panics
+            let _ = tick_handle.await;
 
-            broadcast_timer_status(&app, &state).await;
-            update_tray_menu(&app, &state).await;
+            // Only broadcast if overlay windows exist
+            let has_overlays = app
+                .windows()
+                .keys()
+                .any(|l| l.starts_with("overlay-"));
+
+            broadcast_timer_status(&app, &state, has_overlays).await;
+
+            // Only rebuild tray menu when status actually changes
+            let current_status = state.get_timer_status().await;
+            if last_status.as_ref() != Some(&current_status) {
+                update_tray_menu(&app, &state).await;
+                last_status = Some(current_status);
+            }
         }
     });
 }
@@ -701,14 +729,13 @@ fn handle_tray_event(app: &tauri::AppHandle, event: SystemTrayEvent) {
             "pause" => {
                 let state = app.state::<AppState>();
                 let is_paused = state.timer.is_paused.load(Ordering::SeqCst);
-                if is_paused {
-                    state.timer.is_paused.store(false, Ordering::SeqCst);
-                } else {
-                    state.timer.is_paused.store(true, Ordering::SeqCst);
-                }
-                tauri::async_runtime::block_on(async {
-                    broadcast_timer_status(app, &state).await;
-                    update_tray_menu(app, &state).await;
+                state.timer.is_paused.store(!is_paused, Ordering::SeqCst);
+                let app_clone = app.clone();
+                let state_clone = state.inner().clone();
+                tauri::async_runtime::spawn(async move {
+                    let has_overlays = app_clone.windows().keys().any(|l| l.starts_with("overlay-"));
+                    broadcast_timer_status(&app_clone, &state_clone, has_overlays).await;
+                    update_tray_menu(&app_clone, &state_clone).await;
                 });
             }
             "settings" => {
@@ -722,6 +749,12 @@ fn handle_tray_event(app: &tauri::AppHandle, event: SystemTrayEvent) {
             }
             _ => {}
         },
+        SystemTrayEvent::DoubleClick { .. } => {
+            if let Some(window) = app.get_window("main") {
+                let _ = window.show();
+                let _ = window.set_focus();
+            }
+        }
         _ => {}
     }
 }
